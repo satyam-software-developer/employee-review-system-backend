@@ -18,10 +18,10 @@ const myMiddleware = require("./config/middleware"); // Custom middleware for se
 require("./config/passport_local"); // Initialize Passport Local strategy for user authentication
 
 // Constants for configuration
-const PORT = process.env.PORT || 3000; // Use environment port or default to 3000
+const PORT = process.env.PORT || 3000; // Render will automatically provide the PORT environment variable
 const MONGODB_URL =
   process.env.MONGODB_URL ||
-  "mongodb+srv://krsatyam0506:ghhloYAlLIwqyZ5H@cluster0.iw1gp.mongodb.net/"; // MongoDB connection URL (use environment variable or fallback to default)
+  "mongodb+srv://krsatyam0506:ghhloYAlLIwqyZ5H@cluster0.iw1gp.mongodb.net/"; // Replace with your MongoDB URI
 
 // Initialize Express application
 const app = express();
@@ -48,7 +48,7 @@ app.set("views", "./views"); // Specify the directory for views
 // Configure session management
 app.use(
   session({
-    secret: process.env.SECRET_KEY || "your-secret-key", // Secret key for session encryption (use environment variable or fallback to a default key)
+    secret: process.env.SECRET_KEY || "your-secret-key", // Use SECRET_KEY from environment variables
     resave: false, // Don't force a session to be saved if it wasn't modified
     saveUninitialized: false, // Don't save uninitialized sessions
     cookie: {
@@ -80,7 +80,5 @@ app.use("/", require("./routes")); // Use routes defined in the routes directory
 
 // Start the Express server
 app.listen(PORT, () =>
-  // Log a message indicating the server is running
   console.log(`🚀 Server is running on http://localhost:${PORT}`)
 );
-
