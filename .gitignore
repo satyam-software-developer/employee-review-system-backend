@@ -4,3 +4,4 @@ node_modules/
 # `node_modules` contains the installed dependencies for the project, which can be reinstalled by running `npm install` or `yarn install`. 
 # It's unnecessary to store these in version control as they can be regenerated from the `package.json` and `package-lock.json` files.
 
+.env
