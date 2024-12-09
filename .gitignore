@@ -1,0 +1,11 @@
+# Ignore the node_modules directory
+node_modules/
+# This line ensures that the `node_modules` directory is not tracked by Git. 
+# `node_modules` contains the installed dependencies for the project, which can be reinstalled by running `npm install` or `yarn install`. 
+# It's unnecessary to store these in version control as they can be regenerated from the `package.json` and `package-lock.json` files.
+
+# Ignore the .env file
+.env
+# This line prevents the `.env` file from being tracked by Git. 
+# The `.env` file typically contains sensitive configuration data such as API keys, database credentials, and other environment-specific settings. 
+# It is important to keep `.env` files private and not share them publicly. Instead, each developer or server should have their own `.env` file with the appropriate values.

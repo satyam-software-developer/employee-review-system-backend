@@ -1,0 +1,224 @@
+
+<div class="container-fluid p-5 d-flex justify-content-between flex-wrap">
+    <!-- Main container with padding and flexible layout for form and feedback section -->
+    <!-- The flexbox is used to position the form and feedback section side by side, with wrapping on smaller screens -->
+
+    <!-- Update Employee Form -->
+    <div class="col-12 col-md-5 mb-4">
+        <!-- Form container for updating employee details -->
+        <form
+            action="/dashboard/admin/update/?id=<%= employee._id %>"
+            method="POST"
+            class="shadow rounded p-4 fw-semibold"
+            style="background-color: #E8F7FF; border-radius: 10px; box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);">
+            <!-- Form styling with shadow, padding, and rounded corners for a modern look -->
+
+            <!-- Heading -->
+            <div class="text-center mb-4">
+                <!-- Centered heading for the form -->
+                <h1 class="text-primary" style="font-size: 2rem;">Update
+                    Employee</h1>
+                <!-- Heading text in primary color, larger font size for emphasis -->
+            </div>
+
+            <!-- Employee Name -->
+            <div class="mb-3">
+                <!-- Label and input field for employee's name -->
+                <label for="name" class="form-label"
+                    style="font-weight: 600; color: #176B87;">Name</label>
+                <!-- Text input field with the employee's current name pre-filled (using server-side templating) -->
+                <input
+                    type="text"
+                    class="form-control"
+                    name="name"
+                    id="name"
+                    value="<%= employee.name %>"
+                    placeholder="Enter employee's name"
+                    required
+                    style="padding: 12px; border-radius: 8px; border: 1px solid #B8E0EA; font-size: 1rem;">
+            </div>
+
+            <!-- Employee Email -->
+            <div class="mb-3">
+                <!-- Label and input field for employee's email address -->
+                <label for="email" class="form-label"
+                    style="font-weight: 600; color: #176B87;">Email
+                    Address</label>
+                <!-- Email input field with the employee's current email pre-filled -->
+                <input
+                    type="email"
+                    class="form-control"
+                    name="email"
+                    id="email"
+                    value="<%= employee.email %>"
+                    placeholder="Enter employee's email"
+                    required
+                    style="padding: 12px; border-radius: 8px; border: 1px solid #B8E0EA; font-size: 1rem;">
+            </div>
+
+            <!-- Employee Role -->
+            <div class="mb-3">
+                <!-- Label and dropdown (select) field for selecting employee role -->
+                <label for="role" class="form-label"
+                    style="font-weight: 600; color: #176B87;">Role</label>
+                <!-- Dropdown menu to select employee role with pre-selection based on current role -->
+                <select
+                    class="form-select"
+                    name="role"
+                    id="role"
+                    aria-label="Select employee role"
+                    required
+                    style="padding: 12px; border-radius: 8px; border: 1px solid #B8E0EA; font-size: 1rem;">
+                    <!-- Option for selecting 'Employee' role with conditional selection if the current role is 'Employee' -->
+                    <option value="Employee" <% if (employee.role ===
+                        'Employee') { %> selected <% } %>>Employee</option>
+                    <!-- Option for selecting 'Admin' role with conditional selection if the current role is 'Admin' -->
+                    <option value="Admin" <% if (employee.role === 'Admin') { %>
+                        selected <% } %>>Admin</option>
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center">
+                <!-- Centered submit button for form submission -->
+                <button type="submit"
+                    class="btn btn-primary px-4 py-2"
+                    style="background-color: #176B87; border: none; font-weight: bold; border-radius: 25px; transition: all 0.3s ease;">
+                    <!-- Button with custom color, rounded corners, and transition effect on hover -->
+                    Update
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Feedback Section -->
+    <div class="col-12 col-md-5">
+        <!-- Section for displaying feedback related to the employee -->
+        <h2 class="text-center mb-4"
+            style="font-size: 1.8rem; color: #176B87;">Feedbacks for
+            Employee</h2>
+        <!-- Heading for feedback section with large font and primary color -->
+
+        <!-- Feedback List -->
+        <div class="d-flex flex-column align-items-center">
+            <!-- Dynamically render feedbacks if available -->
+            <% if (feedbacks.length > 0) { %>
+            <% feedbacks.forEach(feedback => { %>
+            <!-- Loop over each feedback and display it in a card -->
+            <div class="card w-100 mb-3 shadow-sm"
+                style="background-color: #E9F7FB; border-radius: 8px; border-left: 4px solid #176B87;">
+                <!-- Feedback card with custom background, border, and rounded corners -->
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <!-- Blockquote to display the feedback comment -->
+                        <p class="fw-semibold"
+                            style="font-size: 1.1rem; color: #333;">
+                            <%= feedback.comment %></p>
+                        <!-- Comment from the reviewer, styled with bold font and larger text -->
+                        <footer class="blockquote-footer"
+                            style="font-size: 0.9rem; color: #666;">
+                            <%= feedback.reviewer.name %>
+                        </footer>
+                        <!-- Footer to show the name of the reviewer with smaller, lighter text -->
+                    </blockquote>
+                </div>
+            </div>
+            <% }); %>
+            <% } else { %>
+            <!-- Message if no feedbacks are available -->
+            <p class="text-center text-muted" style="font-size: 1rem;">No
+                feedback available for this employee.</p>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<!-- Add Custom Styles for Better UI -->
+<style>
+    /* Body Styling */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f9fc;
+        color: #333;
+    }
+    /* Global styles for body: sets font-family, background color, and text color */
+
+    /* Form Styling */
+    .form-control, .form-select {
+        border-radius: 8px;
+        border: 1px solid #B8E0EA;
+        padding: 12px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    /* Style for form inputs and select fields (rounded borders, padding, transition effect) */
+
+    .form-control:focus, .form-select:focus {
+        border-color: #176B87;
+        box-shadow: 0 0 10px rgba(23, 107, 135, 0.3);
+    }
+    /* Focus styling for form inputs and select fields: changing border color and adding shadow */
+
+    .btn-primary {
+        background-color: #176B87;
+        border: none;
+        padding: 12px 20px;
+        font-size: 1rem;
+        font-weight: bold;
+        border-radius: 50px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    /* Button styling: primary color, padding, rounded corners, and transition effects */
+
+    .btn-primary:hover {
+        background-color: #1C3B4B;
+        transform: translateY(-2px);
+    }
+    /* Button hover effect: darker background color and slight lift effect */
+
+    .card {
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 15px;
+    }
+    /* Styling for feedback cards: shadow, padding, and rounded corners */
+
+    .card-body {
+        padding: 15px;
+    }
+    /* Padding inside the card body */
+
+    /* Blockquote Styling */
+    .blockquote-footer {
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+    /* Style for blockquote footer with smaller, muted text */
+
+    .blockquote {
+        border-left: 4px solid #176b87;
+        padding-left: 20px;
+        color: #333;
+    }
+    /* Blockquote styling with a left border and padding */
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .container-fluid {
+            flex-direction: column;
+            padding: 20px;
+        }
+        /* For smaller screens, switch to a column layout with reduced padding */
+
+        .col-md-5 {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        /* Ensure form and feedback sections take full width on smaller screens */
+
+        .card-body {
+            padding: 12px;
+        }
+        /* Adjust card padding for smaller screens */
+    }
+</style>

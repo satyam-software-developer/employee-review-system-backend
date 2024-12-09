@@ -1,0 +1,103 @@
+<!-- Navbar for all pages -->
+<nav class="navbar navbar-expand-lg shadow-sm"
+    style="background-color: #176B87; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+    <!-- Container for the navbar content, making it responsive -->
+    <div class="container-fluid">
+
+        <!-- Brand Name and Logo (Employee Review System) -->
+        <a class="navbar-brand fw-bold d-flex align-items-center" href="/"
+            style="color: #ffffff; font-weight: bold; font-size: 1.25rem;">
+            <!-- Logo Image -->
+            <img src="/image/brand-logo.png" alt="Logo"
+                style="width: 32px; height: 32px;" class="me-2" />
+            <!-- Brand Heading -->
+            <span style="color: #CAEDFF;">Employee Review System</span>
+        </a>
+
+        <!-- Menu Button (visible on small screens) -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup"
+            aria-expanded="false" aria-label="Toggle navigation"
+            style="border-color: #CAEDFF;">
+            <!-- Hamburger menu icon with custom color -->
+            <span class="navbar-toggler-icon"
+                style="background-image: url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 30 30%27%3E%3Cpath stroke=%27rgba%28%20196,%20237,%20255,%201%29%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-miterlimit=%2710%27 d=%27M4 7h22M4 15h22M4 23h22%27/%3E%3C/svg%3E');"></span>
+        </button>
+
+        <!-- Navbar Links (Menu items) -->
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-semibold">
+                <!-- Check if the user is logged in -->
+                <% if (locals.user) { %>
+                <!-- Check if the logged-in user is an Admin -->
+                <% if (user.role.toString() == 'Admin') { %>
+
+                <!-- Admin Dashboard Link -->
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center"
+                        aria-current="page"
+                        href="/dashboard/admin"
+                        style="color: #ffffff; font-weight: 500; margin-right: 0.75rem;">
+                        <!-- Icon for Home (House) -->
+                        <i class="fa-solid fa-house me-2"></i>
+                        Home
+                    </a>
+                </li>
+
+                <!-- Add Employee Link (Admin-only) -->
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center"
+                        href="/dashboard/admin/addEmployee"
+                        style="color: #ffffff; font-weight: 500; margin-right: 0.75rem;">
+                        <!-- Icon for Add Employee (User Plus) -->
+                        <i class="fa-solid fa-user-plus me-2"></i>
+                        Add Employee
+                    </a>
+                </li>
+
+                <!-- If the user is not an Admin (i.e., Employee) -->
+                <% } else { %>
+
+                <!-- Employee Dashboard Link -->
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center"
+                        aria-current="page"
+                        href="/dashboard/employee"
+                        style="color: #ffffff; font-weight: 500; margin-right: 0.75rem;">
+                        <!-- Icon for Home (House) -->
+                        <i class="fa-solid fa-house me-2"></i>
+                        Home
+                    </a>
+                </li>
+
+                <% } %>
+                <% } %>
+            </ul>
+
+            <!-- User Role and Logout Button -->
+            <div class="navbar-nav fw-semibold d-flex align-items-center">
+                <% if (locals.user) { %>
+                <!-- Display User Role (Admin/Employee) -->
+                <a class="nav-link active d-flex align-items-center"
+                    aria-current="page"
+                    href="#"
+                    style="color: #CAEDFF; font-weight: bold; margin-right: 0.75rem;">
+                    <!-- Icon for User Profile -->
+                    <i class="fa-solid fa-user me-2"></i>
+                    <!-- Display the logged-in user's role (Admin or Employee) -->
+                    <%= user.role %>
+                </a>
+
+                <!-- Logout Button -->
+                <a class="nav-link d-flex align-items-center" href="/signout"
+                    style="color: #f54242; font-weight: 500;">
+                    <!-- Icon for Logout (Right From Bracket) -->
+                    <i class="fa-solid fa-right-from-bracket me-2"></i>
+                    Logout
+                </a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</nav>

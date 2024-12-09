@@ -1,0 +1,87 @@
+
+<!-- Login Page -->
+<div class="w-100 vh-100 d-flex justify-content-center align-items-center"
+    style="background-color: #E4F1FF;">
+    <!-- Form Container: Centered on screen with responsive design -->
+    <form action="/create-session" method="POST"
+        class="col-11 col-md-9 col-lg-5 p-5 shadow rounded fw-semibold"
+        style="background-color: #CCEFFF; border: 2px solid #176B87; border-radius: 12px;">
+        <!-- Heading Section -->
+        <div class="text-center mb-4">
+            <!-- Main Title -->
+            <h1 class="fw-bold"
+                style="color: #176B87; font-size: 2.5rem;">Login</h1>
+            <!-- Subtext for the login page -->
+            <p style="color: #4C6E83; font-size: 1rem;">
+                Welcome back! Please log in to continue.
+            </p>
+        </div>
+
+        <!-- Email Input Section -->
+        <div class="mb-4">
+            <label for="email" class="form-label"
+                style="color: #176B87; font-weight: 600;">
+                Email Address
+            </label>
+            <!-- Email input field, required with placeholder -->
+            <input type="email" class="form-control" name="email" id="email"
+                placeholder="Enter your email"
+                style="padding: 10px; font-size: 1rem; border: 1px solid #B8E0EA; border-radius: 8px;"
+                required />
+        </div>
+
+        <!-- Password Input Section -->
+        <div class="mb-4">
+            <label for="password" class="form-label"
+                style="color: #176B87; font-weight: 600;">
+                Password
+            </label>
+            <!-- Password input field, required with placeholder -->
+            <input type="password" class="form-control" name="password"
+                id="password" placeholder="Enter your password"
+                style="padding: 10px; font-size: 1rem; border: 1px solid #B8E0EA; border-radius: 8px;"
+                required />
+        </div>
+
+        <!-- Show Password Checkbox Section -->
+        <div class="form-check mb-3">
+            <!-- Checkbox for toggling password visibility -->
+            <input type="checkbox" class="form-check-input" id="showPassword"
+                onclick="togglePasswordVisibility()">
+            <label class="form-check-label" for="showPassword">Show
+                Password</label>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+            <!-- Login button with styling and animation on hover -->
+            <button type="submit" class="btn btn-primary w-100"
+                style="background-color: #176B87; border: none; font-weight: bold; padding: 10px 0; font-size: 1.2rem; border-radius: 8px; transition: background-color 0.3s;">
+                Login
+            </button>
+        </div>
+
+        <!-- Sign Up Link Section -->
+        <div class="text-center mt-4">
+            <!-- Prompt for users without an account -->
+            <p class="mb-0" style="font-size: 0.9rem; color: #4C6E83;">
+                Don't have an account?
+                <a href="/sign-up" class="text-primary fw-bold"
+                    style="color: #176B87; text-decoration: none;">
+                    Sign Up
+                </a>
+                instead.
+            </p>
+        </div>
+    </form>
+</div>
+
+<!-- Script for Toggling Password Visibility -->
+<script>
+    // Function to toggle the password visibility when the checkbox is clicked
+    function togglePasswordVisibility() {
+        const passwordInput = document.getElementById('password');
+        const type = passwordInput.type === 'password' ? 'text' : 'password';
+        passwordInput.type = type;  // Toggle password field type between 'password' and 'text'
+    }
+</script>

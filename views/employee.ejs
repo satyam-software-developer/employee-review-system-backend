@@ -1,0 +1,147 @@
+
+<!-- Employee Dashboard -->
+
+<!-- Main Container with Flexbox Layout -->
+<div class="container-fluid d-flex flex-column min-vh-100 px-5">
+    <!-- Heading Section for Employee Dashboard -->
+    <h1 class="text-center mt-2"
+        style="color: #176B87; font-size: 2.5rem; font-weight: bold; font-family: Arial, sans-serif; text-transform: uppercase;">
+        Employee Dashboard
+    </h1>
+
+    <!-- Show Info of Employee -->
+    <div class="w-100 px-5 my-2 fw-semibold text-secondary"
+        style="font-size: 1.2rem; line-height: 1.6; font-family: Arial, sans-serif; color: #6C757D;">
+        <% if (locals.user) { %> <!-- Check if the user is logged in -->
+        <!-- Display Employee's Name and Email -->
+        <span class="fw-bold text-dark"
+            style="font-weight: bold; color: #333;">Employee:</span>
+        <%= user.name %> | <%= user.email %>
+        <% } %>
+        <hr style="border: 1px solid #E0E0E0; margin-top: 1rem;"> <!-- Horizontal line to separate content -->
+    </div>
+
+    <!-- Main Content Section with Flexbox for Two Columns -->
+    <div
+        class="w-100 d-flex flex-column flex-md-row mt-2 justify-content-between flex-wrap"
+        style="gap: 2rem;">
+        
+        <!-- List of Reviews Assigned to the Employee -->
+        <div class="col-12 col-md-5"
+            style="background-color: #F8FBFD; padding: 1.5rem; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+            <!-- Title for Reviews Section -->
+            <h2 class="text-center my-2"
+                style="color: #176B87; font-size: 1.8rem; font-weight: bold; margin-bottom: 1rem;">
+                Reviews Assigned to You:
+            </h2>
+
+            <!-- List of Assigned Reviews with Flexbox -->
+            <div class="w-100 d-flex justify-content-center mt-2 flex-wrap"
+                style="gap: 1rem;">
+                <% for (let i of assignReviews) { %> <!-- Loop through assigned reviews -->
+
+                <!-- Single Review Card -->
+                <div class="p-2 w-100 w-md-50 rounded shadow-sm"
+                    style="background-color: #DAF5FF; border: 1px solid #B0C4DE; border-radius: 8px; padding: 1rem; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);">
+                    
+                    <!-- Modal Dialog for Each Review -->
+                    <div class="modal-dialog" style="max-width: 100%;">
+                        <div class="modal-content"
+                            style="border-radius: 8px; overflow: hidden; border: none;">
+                            
+                            <!-- Modal Header -->
+                            <div class="modal-header"
+                                style="background-color: #176B87; color: #FFFFFF; padding: 1rem;">
+                                <h1 class="modal-title fs-5"
+                                    style="font-size: 1.5rem; font-weight: bold; text-transform: capitalize;">Review</h1>
+                            </div>
+
+                            <!-- Modal Body with Review Form -->
+                            <div class="modal-body"
+                                style="background-color: #E6F7FF; padding: 1.5rem;">
+                                
+                                <!-- Review Form -->
+                                <form method="POST"
+                                    action="/dashboard/employee/addReview/?id=<%= i._id %>"
+                                    id="review-form-<%= i._id %>">
+                                    
+                                    <!-- Recipient Email Field (Disabled) -->
+                                    <div class="mb-3"
+                                        style="margin-bottom: 1.5rem;">
+                                        <label for="recipient-name-<%= i._id %>"
+                                            class="col-form-label fw-semibold"
+                                            style="font-size: 1rem; font-weight: bold; color: #333;">Recipient:</label>
+                                        <input type="text" class="form-control"
+                                            id="recipient-name-<%= i._id %>"
+                                            value="<%= i.email %>" disabled
+                                            style="border: 1px solid #CCC; border-radius: 6px; padding: 0.8rem; background-color: #FFFFFF;">
+                                    </div>
+
+                                    <!-- Message Field (Text Area) -->
+                                    <div class="mb-3"
+                                        style="margin-bottom: 1.5rem;">
+                                        <label for="message-text-<%= i._id %>"
+                                            class="col-form-label fw-semibold"
+                                            style="font-size: 1rem; font-weight: bold; color: #333;">Message:</label>
+                                        <textarea class="form-control"
+                                            id="message-text-<%= i._id %>"
+                                            name="comment" required
+                                            style="border: 1px solid #CCC; border-radius: 6px; padding: 0.8rem; resize: vertical; min-height: 120px;"></textarea>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Modal Footer with Submit Button -->
+                            <div class="modal-footer"
+                                style="background-color: #F0F8FF; padding: 1rem; display: flex; justify-content: flex-end;">
+                                <button form="review-form-<%= i._id %>"
+                                    type="submit" class="btn btn-primary"
+                                    style="background-color: #176B87; border: none; padding: 0.6rem 1.2rem; font-size: 1rem; font-weight: bold; border-radius: 6px; color: #FFFFFF; transition: background-color 0.3s;">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% } %> <!-- End of Assigned Reviews Loop -->
+            </div>
+        </div>
+
+        <!-- List of Feedbacks Given to the Employee -->
+        <div class="col-12 col-md-5"
+            style="background-color: #F8FBFD; padding: 1.5rem; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+            <!-- Title for Feedback Section -->
+            <h2 class="text-center my-2"
+                style="color: #176B87; font-size: 1.8rem; font-weight: bold; margin-bottom: 1rem;">
+                Feedbacks by Others for You:
+            </h2>
+
+            <!-- List of Feedback Cards -->
+            <div
+                class="w-100 d-flex flex-column flex-wrap justify-content-center align-items-center"
+                style="gap: 1rem;">
+                <% for (let j of feedbacks) { %> <!-- Loop through feedbacks -->
+
+                <!-- Single Feedback Card -->
+                <div class="card w-100 m-2 shadow-sm"
+                    style="background-color: #DAF5FF; border-radius: 8px; padding: 1rem; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); border: none;">
+                    <div class="card-body"
+                        style="background-color: #F0FFFF; padding: 1rem; border-radius: 6px;">
+                        <!-- Blockquote for Feedback Text -->
+                        <blockquote class="blockquote mb-0"
+                            style="font-size: 1rem; color: #333; font-style: italic;">
+                            <!-- Feedback Comment -->
+                            <p class="fw-semibold"
+                                style="font-weight: bold; margin-bottom: 0.5rem;"><%= j.comment %></p>
+                            <!-- Reviewer Name -->
+                            <footer class="blockquote-footer"
+                                style="font-size: 0.9rem; color: #555;">by: <%= j.reviewer.name %></footer>
+                        </blockquote>
+                    </div>
+                </div>
+                <% } %> <!-- End of Feedbacks Loop -->
+            </div>
+        </div>
+    </div>
+
+</div>

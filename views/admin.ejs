@@ -1,0 +1,142 @@
+
+<% if (locals.user && locals.user.role === 'Admin') { %>
+<!-- Check if the logged-in user is an Admin -->
+
+<!-- Admin's Page Container -->
+<div class="container-fluid d-flex flex-column min-vh-100 p-4">
+
+    <!-- Admin's Information -->
+    <div class="w-100 fw-semibold text-secondary mb-3">
+        <!-- Display Admin's Name and Email -->
+        <span class="fw-bold text-dark">Admin:</span> <%= user.name %> | <%=
+        user.email %>
+    </div>
+    <hr> <!-- Horizontal line separating the info from the content -->
+
+    <!-- Page Heading for "All Employees" -->
+    <h1 class="text-center mb-4"
+        style="color: #176B87; font-size: 2rem; font-weight: bold;">All
+        Employees</h1>
+
+    <!-- List of All Employees -->
+    <div
+        class="d-flex flex-wrap justify-content-center justify-content-md-start mb-4">
+        <% for (const user of employees) { %>
+        <!-- Loop through all employees -->
+
+        <!-- Single Employee Card -->
+        <div class="card shadow m-2"
+            style="background-color: #F0F8FF; width: 18rem; border-radius: 10px;">
+            <div class="card-body">
+                <!-- Employee Image -->
+                <img src="/image/manager.png" alt="Manager"
+                    style="width: 40px; height: 40px; border-radius: 50%;"
+                    class="mb-3" />
+
+                <!-- Employee Name -->
+                <h5 class="card-title fw-bold" style="color: #176B87;"><%=
+                    user.name %></h5>
+
+                <!-- Employee Email -->
+                <h6 class="card-subtitle mb-3 text-muted"><%= user.email %></h6>
+
+                <!-- Action Buttons (Assign Review, Delete, Edit) -->
+                <div class="d-flex flex-wrap">
+                    <!-- Assign Review Button (Triggers Modal) -->
+                    <a href="#" class="btn mb-2 shadow text-white w-100"
+                        style="background-color: #FF9B82; font-weight: bold;"
+                        data-bs-toggle="modal"
+                        data-bs-target="#user<%= user._id %>">
+                        <i class="fa-solid fa-file"></i> Assign Review
+                    </a>
+
+                    <!-- Delete Employee Button -->
+                    <a href="/dashboard/admin/delete/?id=<%= user._id %>"
+                        class="btn btn-danger mb-1 shadow w-48"
+                        style="margin-right: 4px;">
+                        <i class="fa-solid fa-user-minus"></i> Delete
+                    </a>
+
+                    <!-- Edit Employee Button -->
+                    <a href="/dashboard/admin/updateForm/?id=<%= user._id %>"
+                        class="btn text-white mb-1 shadow w-48"
+                        style="background-color: #279EFF;">
+                        <i class="fa-solid fa-user-pen"></i> Edit
+                    </a>
+                </div>
+
+                <!-- Modal for Assigning Review -->
+                <div class="modal fade" id="user<%= user._id %>" tabindex="-1"
+                    aria-labelledby="userModalLabel<%= user._id %>"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header"
+                                style="background-color: #176B87; color: white;">
+                                <!-- Modal Header -->
+                                <h1 class="modal-title fs-5"
+                                    id="userModalLabel<%= user._id %>">Assign
+                                    Review</h1>
+                                <!-- Close Button -->
+                                <button type="button" class="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Form to Assign a Review -->
+                                <form
+                                    action="/dashboard/admin/assignReview/?id=<%= user._id %>"
+                                    method="POST">
+                                    <!-- Reviewer Input (Disabled with Admin's Email) -->
+                                    <div class="mb-3">
+                                        <label
+                                            class="col-form-label fw-bold">Reviewer:</label>
+                                        <input type="text" class="form-control"
+                                            value="<%= user.email %>" disabled
+                                            style="background-color: #F0F8FF;" />
+                                    </div>
+
+                                    <!-- Recipient Dropdown (All Employees Except Reviewer) -->
+                                    <div class="mb-3">
+                                        <label
+                                            class="col-form-label fw-bold">Recipient:</label>
+                                        <select class="form-select"
+                                            name="recipient" required
+                                            style="border-color: #176B87;">
+                                            <% for (const recipient of
+                                            employees) { %>
+                                            <!-- Loop through all employees -->
+                                            <% if (recipient.email !==
+                                            user.email) { %>
+                                            <!-- Exclude the current reviewer -->
+                                            <option
+                                                value="<%= recipient._id %>"><%=
+                                                recipient.email %></option>
+                                            <% } %>
+                                            <% } %>
+                                        </select>
+                                    </div>
+
+                                    <!-- Modal Footer with Buttons -->
+                                    <div class="d-flex justify-content-end">
+                                        <!-- Cancel Button (Closes Modal) -->
+                                        <button type="button"
+                                            class="btn btn-danger mx-2"
+                                            data-bs-dismiss="modal">Cancel</button>
+                                        <!-- Submit Button (Assign Review) -->
+                                        <button type="submit"
+                                            class="btn btn-primary mx-2">Assign</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End of Modal -->
+            </div>
+        </div>
+        <% } %> <!-- End of Employee Loop -->
+    </div>
+    <!-- End of Employees List -->
+</div>
+<% } %> <!-- End of Admin Check -->
