@@ -1,86 +1,96 @@
-// Load environment variables from a .env file
-require("dotenv").config();
 
-// Database connection setup
-const mongoose = require("./config/mongoose");
-// Connect to MongoDB database
-mongoose.connect();
+// for environment variables
+require('dotenv').config();
 
-// Importing required dependencies
-const express = require("express"); // Web framework
-const passport = require("passport"); // Authentication middleware
-const cookieParser = require("cookie-parser"); // Middleware to parse cookies
-const session = require("express-session"); // Middleware to handle sessions
-const expressLayouts = require("express-ejs-layouts"); // Middleware for EJS layouts
-const flash = require("connect-flash"); // Middleware for flash messages
-const MongoStore = require("connect-mongo"); // Store sessions in MongoDB
-const myMiddleware = require("./config/middleware"); // Custom middleware for setting flash messages
-require("./config/passport_local"); // Initialize Passport Local strategy for user authentication
+// connect to database
+require('./config/mongoose').connect();
 
-// Constants for configuration
-const PORT = process.env.PORT || 3000; // Use environment port or default to 3000
-const MONGODB_URL =
-  process.env.MONGODB_URL ||
-  "mongodb+srv://krsatyam0506:ghhloYAlLIwqyZ5H@cluster0.iw1gp.mongodb.net/"; // MongoDB connection URL (use environment variable or fallback to default)
+// express
+const express = require('express');
 
-// Initialize Express application
+// passport local strategy
+const passportConfig = require('./config/passport_local');
+// passport
+const passport = require('passport');
+
+// for parsing the data in cookie
+const cookieParser = require('cookie-parser')
+
+// store the session create by passport
+const session=require('express-session');
+
+// importing layouts 
+const expressLayouts =  require('express-ejs-layouts');
+
+// flash messages package and middleware
+const flash = require('connect-flash');
+const myMware=require('./config/middleware');
+
+// store the session in mongostore
+const MongoStore = require('connect-mongo');
+
+// port
+const {PORT} = process.env;
+
+// creatin app
 const app = express();
 
-// Middleware for parsing incoming requests
-app.use(express.json()); // Parse incoming JSON requests
-app.use(express.urlencoded({ extended: true })); // Parse URL-encoded requests (forms)
+// middlewares
 
-// Serve static files (like images, styles, etc.) from the 'assets' directory
-app.use(express.static("assets"));
+// for reading json data
+app.use(express.json());
+// for reading url data
+app.use(express.urlencoded({
+    extended:true
+})); 
 
-// Middleware for parsing cookies
+// for static files folder
+app.use(express.static('assets'));
+
+// for parsing the cookies
 app.use(cookieParser());
 
-// Middleware for using EJS layouts (used for template inheritance)
+// using layouts
 app.use(expressLayouts);
-app.set("layout extractStyles", true); // Extract styles for layouts
-app.set("layout extractScripts", true); // Extract scripts for layouts
 
-// Set up EJS view engine and specify the directory for views
-app.set("view engine", "ejs"); // Use EJS as the templating engine
-app.set("views", "./views"); // Specify the directory for views
+// extracting stylesheets and scripts for individual pages
+app.set('layout extractStyles',true);
+app.set('layout extractScripts',true);
 
-// Configure session management
-app.use(
-  session({
-    secret: process.env.SECRET_KEY || "your-secret-key", // Secret key for session encryption (use environment variable or fallback to a default key)
-    resave: false, // Don't force a session to be saved if it wasn't modified
-    saveUninitialized: false, // Don't save uninitialized sessions
+
+// setting view engine as ejs and defining its path
+app.set('view engine','ejs');
+app.set('views','./views');
+
+// Use express-session for session management
+app.use(session({
+    secret: process.env.SECRET_KEY, // Replace with your own secret key
+    resave: false,
+    saveUninitialized: false,
     cookie: {
-      maxAge: 24 * 60 * 60 * 1000, // Session expiry time (1 day in milliseconds)
-      secure: process.env.NODE_ENV === "production", // Ensure cookies are only sent over HTTPS in production
+      maxAge: 24 * 60 * 60 * 1000, // Session duration in milliseconds (1 day in this example)
+      secure: false, // Set this to false to allow the session over HTTP
     },
+    // store the session in database
     store: MongoStore.create({
-      mongoUrl: MONGODB_URL, // MongoDB connection URL for session storage
-      collectionName: "sessions", // Optional: specify the collection name for storing sessions in MongoDB
-      ttl: 24 * 60 * 60, // Time-to-live for sessions (1 day in seconds)
-    }),
-  })
-);
-
-// Enable flash messages for user feedback (success/error messages)
+      mongoUrl:process.env.MONGODB_URL
+    })
+  }));
+  
+// connect-flash middleware
 app.use(flash());
-// Custom middleware to set flash messages in locals (for use in views)
-app.use(myMiddleware.setFlash);
+app.use(myMware.setFlash);
 
-// Initialize Passport.js for handling authentication
-app.use(passport.initialize()); // Initialize Passport
-app.use(passport.session()); // Enable session handling with Passport
+// initialize passport
+app.use(passport.initialize());
+// passport sessions
+app.use(passport.session());
 
-// Store authenticated user in local variables for use in views
+// store the logged in user's data in locals variable
 app.use(passport.setAuthenticatedUser);
 
-// Define application routes
-app.use("/", require("./routes")); // Use routes defined in the routes directory
+// routes
+app.use('/',require('./routes'));
 
-// Start the Express server
-app.listen(PORT, () =>
-  // Log a message indicating the server is running
-  console.log(`🚀 Server is running on http://localhost:${PORT}`)
-);
-
+// fire up server
+app.listen(PORT,() => console.log(`Server is running on port: ${PORT}`));
