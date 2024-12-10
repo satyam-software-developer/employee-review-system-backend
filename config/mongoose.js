@@ -1,32 +1,30 @@
 // Import the mongoose library for interacting with MongoDB
 const mongoose = require("mongoose");
 
-// Define the connection string for the MongoDB database
-// Replace with your actual MongoDB URI and credentials as needed
-const MONGODB_URL =
-  "mongodb+srv://krsatyam0506:ghhloYAlLIwqyZ5H@cluster0.iw1gp.mongodb.net/";
+// Extract the MongoDB URL from environment variables
+const { MONGODB_URL } = process.env;
 
 // Export a function to establish a connection to the MongoDB database
 exports.connect = () => {
   /**
    * Use mongoose's `connect` method to establish a connection to the MongoDB database.
-   * `MONGODB_URL` is the connection string that contains:
-   * - Protocol: `mongodb+srv` (for connecting to a MongoDB Atlas cluster)
-   * - Username: `krsatyam0506`
-   * - Password: `ghhloYAlLIwqyZ5H`
-   * - Cluster: `cluster0.iw1gp.mongodb.net/`
+   * `MONGODB_URL` is obtained from environment variables to keep credentials secure.
    *
-   * Note: Make sure sensitive credentials like the username and password are securely stored
-   * using environment variables to avoid exposing them in the source code.
+   * Note: Ensure your `.env` file contains a valid MONGODB_URL for connecting to the database.
    */
   mongoose
-    .connect(MONGODB_URL) // Attempt to connect to the database
-    .then(() => {
-      // Log a success message if the connection is established
-      console.log("✅ Database connected successfully");
+    .connect(MONGODB_URL, {
+      useNewUrlParser: true, // Use the new URL string parser
+      useUnifiedTopology: true, // Use the new server discovery and monitoring engine
     })
-    .catch((err) => {
+    .then(() => {
+      // Log a success message when the connection is successfully established
+      console.log("✅ Database is connected successfully");
+    })
+    .catch((error) => {
       // Log an error message if the connection fails
-      console.error("❌ Database connection error:", err.message);
+      console.error("❌ Database connection failed");
+      console.error("Error:", error.message);
+      process.exit(1); // Exit the process with a failure code
     });
 };
