@@ -19,7 +19,7 @@ require("./config/passport_local"); // Initialize Passport Local strategy for us
 
 // Constants for configuration
 // const PORT = process.env.PORT || 3000; // Render will automatically provide the PORT environment variable
-const PORT = process.env.NODE_ENV === "production" ? process.env.PORT : 3000;
+const PORT =  3000;
 
 const MONGODB_URL =
   process.env.MONGODB_URL ||
