@@ -18,7 +18,9 @@ const myMiddleware = require("./config/middleware"); // Custom middleware for se
 require("./config/passport_local"); // Initialize Passport Local strategy for user authentication
 
 // Constants for configuration
-const PORT = process.env.PORT || 3000; // Render will automatically provide the PORT environment variable
+// const PORT = process.env.PORT || 3000; // Render will automatically provide the PORT environment variable
+const PORT = process.env.NODE_ENV === "production" ? process.env.PORT : 3000;
+
 const MONGODB_URL =
   process.env.MONGODB_URL ||
   "mongodb+srv://krsatyam0506:ghhloYAlLIwqyZ5H@cluster0.iw1gp.mongodb.net/"; // Replace with your MongoDB URI
