@@ -10,7 +10,7 @@ import * as employeeController from "../controllers/employeeController.js";
 // Create a new router instance for handling employee-related routes
 const router = express.Router();
 
-// Middleware array for checking authentication and employee access
+// Middleware util for checking authentication and employee access
 const authenticateEmployee = [
   passport.checkAuthentication, // Middleware to verify if the user is logged in
   passport.isEmployee, // Middleware to verify if the logged-in user is an employee

@@ -10,7 +10,7 @@ import * as adminController from "../controllers/adminController.js";
 // Create a new router instance for handling admin-related routes
 const router = express.Router();
 
-// Middleware array for checking authentication and admin access
+// Middleware util for checking authentication and admin access
 const authenticate = [
   passport.checkAuthentication, // Middleware to verify if the user is logged in
   passport.isAdmin, // Middleware to verify if the logged-in user has admin privileges

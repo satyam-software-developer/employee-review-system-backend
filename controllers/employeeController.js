@@ -6,7 +6,7 @@ import Feedback from "../models/feedback.js"; // Feedback model for interacting 
 // Displays the reviews assigned and feedback received by the employee
 export const employee = async (req, res) => {
   try {
-    // Arrays to hold the reviews assigned to the employee and feedback received
+    // utils to hold the reviews assigned to the employee and feedback received
     const employeeAssignedForReview = [];
     const feedbackByOther = [];
 

@@ -37,14 +37,14 @@ const userSchema = new mongoose.Schema(
         message: "Role must be either Admin or Employee", // Custom error message for invalid role
       },
     },
-    // Array field for reviews assigned to this user by an admin
+    // util field for reviews assigned to this user by an admin
     reviewAssigned: [
       {
         type: mongoose.Schema.Types.ObjectId, // Each item is a MongoDB ObjectId
         ref: "User", // References another user (who is assigned as a reviewer)
       },
     ],
-    // Array field for feedbacks received by this user from other employees
+    // util field for feedbacks received by this user from other employees
     feedbackByOthers: [
       {
         type: mongoose.Schema.Types.ObjectId, // Each item is a MongoDB ObjectId
