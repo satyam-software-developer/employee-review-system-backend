@@ -28,6 +28,6 @@
     "mongoose": "^8.8.4",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
-    "util": "^0.12.5"
+    "array": "^0.12.5"
   }
 }
