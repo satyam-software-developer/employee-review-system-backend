@@ -1,14 +1,14 @@
 // Import required modules
-const passport = require("passport"); // Passport for authentication
-const LocalStrategy = require("passport-local").Strategy; // Local strategy for username/password authentication
-const bcrypt = require("bcryptjs"); // For password hashing and comparison
-const User = require("../models/User"); // User model for database interaction
+import passport from 'passport'; // Passport for authentication
+import { Strategy as LocalStrategy } from 'passport-local'; // Local strategy for username/password authentication
+import bcrypt from 'bcryptjs'; // For password hashing and comparison
+import User from '../models/User.js'; // User model for database interaction
 
 // Setting up the Local Strategy for authentication
 passport.use(
   new LocalStrategy(
     {
-      usernameField: "email", // Specify the field used for login (default is 'username'; here we use 'email')
+      usernameField: 'email', // Specify the field used for login (default is 'username'; here we use 'email')
       passReqToCallback: true, // Pass the request object to the callback function
     },
     // Authentication callback function
@@ -19,7 +19,7 @@ passport.use(
 
         // If no user is found with the provided email
         if (!user) {
-          return done(null, false, { message: "Incorrect username." }); // Provide an error message
+          return done(null, false, { message: 'Incorrect username.' }); // Provide an error message
         }
 
         // Compare the provided password with the hashed password in the database
@@ -27,7 +27,7 @@ passport.use(
 
         // If the password does not match
         if (!isMatch) {
-          return done(null, false, { message: "Incorrect password." }); // Provide an error message
+          return done(null, false, { message: 'Incorrect password.' }); // Provide an error message
         }
 
         // If authentication is successful, return the user object
@@ -54,7 +54,7 @@ passport.deserializeUser(async (id, done) => {
 
     // If the user is not found in the database
     if (!user) {
-      return done(new Error("User not found")); // Provide an error
+      return done(new Error('User not found')); // Provide an error
     }
 
     // If user is found, pass the user object to the next middleware
@@ -73,7 +73,7 @@ passport.checkAuthentication = (req, res, next) => {
   }
 
   // If not authenticated, redirect the user to the login page
-  return res.redirect("/");
+  return res.redirect('/');
 };
 
 // Middleware to set the authenticated user for the views
@@ -90,24 +90,25 @@ passport.setAuthenticatedUser = (req, res, next) => {
 // Middleware to check if the user has an admin role
 passport.isAdmin = (req, res, next) => {
   // If the authenticated user has the role 'Admin', allow access
-  if (req.user && req.user.role === "Admin") {
+  if (req.user && req.user.role === 'Admin') {
     return next();
   }
 
   // If not an admin, redirect back to the previous page
-  return res.redirect("back");
+  return res.redirect('back');
 };
 
 // Middleware to check if the user has an employee role
 passport.isEmployee = (req, res, next) => {
   // If the authenticated user has the role 'Employee', allow access
-  if (req.user && req.user.role === "Employee") {
+  if (req.user && req.user.role === 'Employee') {
     return next();
   }
 
   // If not an employee, redirect back to the previous page
-  return res.redirect("back");
+  return res.redirect('back');
 };
 
 // Exporting the configured passport instance for use in other parts of the application
-module.exports = passport;
+export default passport;
+

@@ -1,14 +1,14 @@
 // Import express module to work with routes and HTTP requests
-const express = require("express");
+import express from "express";
+
+// Import passport for handling user authentication
+import passport from "passport";
+
+// Import the controller that contains logic for handling user-related actions
+import * as userController from "../controllers/userController.js";
 
 // Create a new router instance using express.Router() for handling route definitions
 const router = express.Router();
-
-// Import passport for handling user authentication
-const passport = require("passport");
-
-// Import the controller that contains logic for handling user-related actions
-const userController = require("../controllers/userController");
 
 // Route to render the homepage or the sign-in page
 // This route is accessed by GET requests to '/'
@@ -41,4 +41,4 @@ router.post("/create-account", userController.createAccount);
 
 // Export the router for use in the main app file
 // This makes the user-related routes available for use by the application
-module.exports = router;
+export default router;

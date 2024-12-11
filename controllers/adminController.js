@@ -1,10 +1,10 @@
 // Import required modules
-const User = require("../models/User"); // User model for interacting with the users collection
-const Feedback = require("../models/feedback"); // Feedback model for interacting with the feedback collection
-const bcrypt = require("bcryptjs"); // For hashing and comparing passwords
+import User from "../models/User.js"; // User model for interacting with the users collection
+import Feedback from "../models/feedback.js"; // Feedback model for interacting with the feedback collection
+import bcrypt from "bcryptjs"; // For hashing and comparing passwords
 
 // Render the admin dashboard
-module.exports.admin = async (req, res) => {
+export const admin = async (req, res) => {
   try {
     // Fetch all users with the role "Employee" from the database
     const employeeList = await User.find({ role: "Employee" });
@@ -23,15 +23,9 @@ module.exports.admin = async (req, res) => {
 };
 
 // Delete an employee and related feedback
-module.exports.deleteEmployee = async (req, res) => {
+export const deleteEmployee = async (req, res) => {
   try {
     const { id } = req.query; // Get the employee ID from the query parameters
-
-    // // Delete all feedback where the employee is either the reviewer or the recipient
-    // await Feedback.deleteMany({ $or: [{ reviewer: id }, { recipient: id }] });
-
-    // // Delete the employee from the database
-    // await User.findByIdAndDelete(id);
 
     // Execute multiple asynchronous operations concurrently
     await Promise.all([
@@ -43,32 +37,9 @@ module.exports.deleteEmployee = async (req, res) => {
         ],
       }),
 
-      // Delete the employee record from the database using the unique ID
+      // Delete the employee record from the database using their unique ID
       User.findByIdAndDelete(id),
     ]);
-
-    /*
-Explanation of Code:
-1. `Promise.all`:
-   - This method runs multiple asynchronous operations in parallel.
-   - It takes an array of Promises (i.e., asynchronous tasks) and waits for all of them to resolve.
-   - If any Promise in the array rejects, `Promise.all` will throw an error and stop further execution.
-
-2. `Feedback.deleteMany({ $or: [...] })`:
-   - Deletes all feedback records where:
-     a. The employee is listed as the `reviewer` (i.e., they wrote the feedback).
-     b. The employee is listed as the `recipient` (i.e., they received the feedback).
-   - The `$or` operator ensures that records matching either condition are deleted.
-
-3. `User.findByIdAndDelete(id)`:
-   - Deletes the employee record from the `User` collection using their unique ID.
-   - This ensures the employee is completely removed from the database.
-
-4. Advantages of `Promise.all`:
-   - By running both operations concurrently:
-     a. Performance is improved compared to running them sequentially.
-     b. Both tasks complete at roughly the same time, minimizing the overall execution time.
-*/
 
     // Flash a success message and redirect to the referring page or home page
     req.flash("success", "Employee successfully deleted");
@@ -82,7 +53,7 @@ Explanation of Code:
 };
 
 // Render the form to update employee data
-module.exports.updateForm = async (req, res) => {
+export const updateForm = async (req, res) => {
   try {
     const { id } = req.query; // Get the employee ID from the query parameters
 
@@ -115,7 +86,7 @@ module.exports.updateForm = async (req, res) => {
 };
 
 // Update employee data
-module.exports.updateEmployee = async (req, res) => {
+export const updateEmployee = async (req, res) => {
   try {
     // Update the employee's data in the database
     await User.findByIdAndUpdate(req.query.id, req.body);
@@ -132,7 +103,7 @@ module.exports.updateEmployee = async (req, res) => {
 };
 
 // Render the form for adding a new employee
-module.exports.addEmployeeForm = (req, res) => {
+export const addEmployeeForm = (req, res) => {
   // Render the add employee form view
   res.render("addEmployee", {
     title: "Admin | Add Employee", // Page title
@@ -140,7 +111,7 @@ module.exports.addEmployeeForm = (req, res) => {
 };
 
 // Add a new employee
-module.exports.addEmployee = async (req, res) => {
+export const addEmployee = async (req, res) => {
   try {
     const { name, email, password, cnf_password } = req.body; // Get form data
 
@@ -180,7 +151,7 @@ module.exports.addEmployee = async (req, res) => {
 };
 
 // Assign a review to an employee
-module.exports.assignReview = async (req, res) => {
+export const assignReview = async (req, res) => {
   try {
     const { id } = req.query; // Get the reviewer's ID from the query parameters
     const { recipient } = req.body; // Get the recipient's ID from the form data

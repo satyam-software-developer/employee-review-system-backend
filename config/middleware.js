@@ -1,5 +1,5 @@
 // Middleware to set flash notifications
-module.exports.setFlash = (req, res, next) => {
+ const setFlash = (req, res, next) => {
   /**
    * Attach flash messages to the `res.locals` object.
    * `res.locals` is a special object that allows you to pass data to the views (templates).
@@ -29,3 +29,6 @@ module.exports.setFlash = (req, res, next) => {
    */
   next();
 };
+
+
+export default { setFlash };

@@ -1,5 +1,5 @@
 // Import mongoose, a library used for MongoDB interaction
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 // Define the schema for the User model
 const userSchema = new mongoose.Schema(
@@ -68,4 +68,4 @@ userSchema.index({ email: 1 }, { unique: true });
 const User = mongoose.models.User || mongoose.model("User", userSchema);
 
 // Export the User model so it can be used in other parts of the application
-module.exports = User;
+export default User;

@@ -1,14 +1,14 @@
 // Import express, a web application framework for Node.js
-const express = require("express");
+import express from "express";
+
+// Import passport, an authentication middleware for securing routes
+import passport from "passport";
+
+// Import the employee controller, which contains the logic for handling employee-specific operations
+import * as employeeController from "../controllers/employeeController.js";
 
 // Create a new router instance for handling employee-related routes
 const router = express.Router();
-
-// Import passport, an authentication middleware for securing routes
-const passport = require("passport");
-
-// Import the employee controller, which contains the logic for handling employee-specific operations
-const employeeController = require("../controllers/employeeController");
 
 // Middleware array for checking authentication and employee access
 const authenticateEmployee = [
@@ -29,4 +29,4 @@ router.get("/", authenticateEmployee, employeeController.employee);
 router.post("/addReview", authenticateEmployee, employeeController.addReview);
 
 // Export the router so it can be included in the main application
-module.exports = router;
+export default router;

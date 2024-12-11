@@ -1,14 +1,14 @@
 // Import express, a web application framework for Node.js
-const express = require("express");
+import express from "express";
+
+// Import passport, an authentication middleware
+import passport from "passport";
+
+// Import the admin controller, which contains the logic for handling admin-specific operations
+import * as adminController from "../controllers/adminController.js";
 
 // Create a new router instance for handling admin-related routes
 const router = express.Router();
-
-// Import passport, an authentication middleware
-const passport = require("passport");
-
-// Import the admin controller, which contains the logic for handling admin-specific operations
-const adminController = require("../controllers/adminController");
 
 // Middleware array for checking authentication and admin access
 const authenticate = [
@@ -61,4 +61,4 @@ router.post("/createEmployee", authenticate, adminController.addEmployee);
 router.post("/assignReview", authenticate, adminController.assignReview);
 
 // Export the router so it can be used in the main application
-module.exports = router;
+export default router;

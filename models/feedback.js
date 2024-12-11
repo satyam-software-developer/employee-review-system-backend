@@ -1,5 +1,5 @@
 // Import mongoose, a library for interacting with MongoDB
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 // Define the schema for the Feedback model
 const feedbackSchema = new mongoose.Schema(
@@ -36,8 +36,7 @@ feedbackSchema.index({ reviewer: 1, recipient: 1 }, { unique: true });
 
 // Compile the Feedback model only if it hasn't already been compiled
 // This prevents errors when the model is imported multiple times in a project
-const Feedback =
-  mongoose.models.Feedback || mongoose.model("Feedback", feedbackSchema);
+const Feedback = mongoose.models.Feedback || mongoose.model("Feedback", feedbackSchema);
 
 // Export the Feedback model to make it accessible in other parts of the application
-module.exports = Feedback;
+export default Feedback;

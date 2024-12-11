@@ -1,10 +1,10 @@
 // Importing required models
-const User = require("../models/User"); // User model for interacting with the users collection
-const Feedback = require("../models/feedback.js"); // Feedback model for interacting with the feedback collection
+import User from "../models/User.js"; // User model for interacting with the users collection
+import Feedback from "../models/feedback.js"; // Feedback model for interacting with the feedback collection
 
 // Render the employee's dashboard
 // Displays the reviews assigned and feedback received by the employee
-module.exports.employee = async (req, res) => {
+export const employee = async (req, res) => {
   try {
     // Arrays to hold the reviews assigned to the employee and feedback received
     const employeeAssignedForReview = [];
@@ -58,13 +58,13 @@ module.exports.employee = async (req, res) => {
 };
 
 // Add feedback for an employee
-module.exports.addReview = async (req, res) => {
+export const addReview = async (req, res) => {
   try {
     // Get the recipient's ID from the query parameters
-    const recipient = req.query.id;
+    const { id: recipient } = req.query;
 
     // Get the reviewer's ID from the logged-in user's session
-    const reviewer = req.user._id;
+    const { _id: reviewer } = req.user;
 
     // Get the comment from the request body
     const { comment } = req.body;

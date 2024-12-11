@@ -1,5 +1,5 @@
 // Import the mongoose library for interacting with MongoDB
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 // Define the connection string for the MongoDB database
 // Replace with your actual MongoDB URI and credentials as needed
@@ -7,7 +7,7 @@ const MONGODB_URL =
   "mongodb+srv://krsatyam0506:ghhloYAlLIwqyZ5H@cluster0.iw1gp.mongodb.net/";
 
 // Export a function to establish a connection to the MongoDB database
-exports.connect = () => {
+const connect = () => {
   /**
    * Use mongoose's `connect` method to establish a connection to the MongoDB database.
    * `MONGODB_URL` is the connection string that contains:
@@ -20,13 +20,13 @@ exports.connect = () => {
    * using environment variables to avoid exposing them in the source code.
    */
   mongoose
-    .connect(MONGODB_URL) // Attempt to connect to the database
+    .connect(MONGODB_URL)
     .then(() => {
-      // Log a success message if the connection is established
       console.log("✅ Database connected successfully");
     })
     .catch((err) => {
-      // Log an error message if the connection fails
       console.error("❌ Database connection error:", err.message);
     });
 };
+
+export default connect;

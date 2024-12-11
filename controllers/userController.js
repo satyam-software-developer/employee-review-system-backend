@@ -1,14 +1,14 @@
 // Importing necessary modules
-const User = require("../models/User"); // User model for interacting with the users collection in the database
-const bcrypt = require("bcryptjs"); // Library for hashing passwords securely
+import User from "../models/User.js"; // User model for interacting with the users collection in the database
+import bcrypt from "bcryptjs"; // Library for hashing passwords securely
 
 // Render the homepage or login page
-module.exports.home = (req, res) => {
+export const home = (req, res) => {
   try {
     // If the user is already logged in, redirect to their respective dashboard
     if (req.isAuthenticated()) {
-      const user = req.user; // Get the authenticated user from the session
-      return user.role === "Admin" // Check the user's role
+      const { role } = req.user; // Get the authenticated user's role from the session
+      return role === "Admin"
         ? res.redirect("/dashboard/admin") // Redirect to admin dashboard
         : res.redirect("/dashboard/employee"); // Redirect to employee dashboard
     }
@@ -26,12 +26,12 @@ module.exports.home = (req, res) => {
 };
 
 // Render the signup page
-module.exports.signUp = (req, res) => {
+export const signUp = (req, res) => {
   try {
     // If the user is already logged in, redirect to their respective dashboard
     if (req.isAuthenticated()) {
-      const user = req.user; // Get the authenticated user from the session
-      return user.role === "Admin" // Check the user's role
+      const { role } = req.user; // Get the authenticated user's role from the session
+      return role === "Admin"
         ? res.redirect("/dashboard/admin") // Redirect to admin dashboard
         : res.redirect("/dashboard/employee"); // Redirect to employee dashboard
     }
@@ -49,7 +49,7 @@ module.exports.signUp = (req, res) => {
 };
 
 // Create a new user account
-module.exports.createAccount = async (req, res) => {
+export const createAccount = async (req, res) => {
   try {
     // Extract user data from the request body
     let { name, email, password, cnf_password, role } = req.body;
@@ -93,15 +93,15 @@ module.exports.createAccount = async (req, res) => {
 };
 
 // Create a session for the user
-module.exports.createSession = (req, res) => {
+export const createSession = (req, res) => {
   try {
-    const user = req.user; // Get the authenticated user from the session
+    const { role } = req.user; // Get the authenticated user's role from the session
 
     // Flash a success message indicating successful login
     req.flash("success", "Welcome, you are logged in!");
 
     // Redirect to the appropriate dashboard based on the user's role
-    return user.role === "Admin" // Check the user's role
+    return role === "Admin"
       ? res.redirect("/dashboard/admin") // Redirect to admin dashboard
       : res.redirect("/dashboard/employee"); // Redirect to employee dashboard
   } catch (error) {
@@ -113,7 +113,7 @@ module.exports.createSession = (req, res) => {
 };
 
 // Log out the user
-module.exports.signout = (req, res, next) => {
+export const signout = (req, res, next) => {
   try {
     // Call the logout method to end the user's session
     req.logout((err) => {

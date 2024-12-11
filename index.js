@@ -1,26 +1,24 @@
 // Load environment variables from a .env file
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 
 // Database connection setup
-const mongoose = require("./config/mongoose");
-// Connect to MongoDB database
-mongoose.connect();
+import connect from "./config/mongoose.js"; // Import default export from mongoose.js
+connect(); // Establish connection to the MongoDB database
 
 // Importing required dependencies
-const express = require("express"); // Web framework
-const passport = require("passport"); // Authentication middleware
-const cookieParser = require("cookie-parser"); // Middleware to parse cookies
-const session = require("express-session"); // Middleware to handle sessions
-const expressLayouts = require("express-ejs-layouts"); // Middleware for EJS layouts
-const flash = require("connect-flash"); // Middleware for flash messages
-const MongoStore = require("connect-mongo"); // Store sessions in MongoDB
-const myMiddleware = require("./config/middleware"); // Custom middleware for setting flash messages
-require("./config/passport_local"); // Initialize Passport Local strategy for user authentication
+import express from "express"; // Web framework
+import passport from "passport"; // Authentication middleware
+import cookieParser from "cookie-parser"; // Middleware to parse cookies
+import session from "express-session"; // Middleware to handle sessions
+import expressLayouts from "express-ejs-layouts"; // Middleware for EJS layouts
+import flash from "connect-flash"; // Middleware for flash messages
+import MongoStore from "connect-mongo"; // Store sessions in MongoDB
+import myMiddleware from "./config/middleware.js"; // Custom middleware for setting flash messages
+import "./config/passport_local.js"; // Initialize Passport Local strategy for user authentication
 
 // Constants for configuration
-// const PORT = process.env.PORT || 3000; // Render will automatically provide the PORT environment variable
-const PORT =  3000;
-
+const PORT = process.env.PORT || 3000; // Render will automatically provide the PORT environment variable
 const MONGODB_URL =
   process.env.MONGODB_URL ||
   "mongodb+srv://krsatyam0506:ghhloYAlLIwqyZ5H@cluster0.iw1gp.mongodb.net/"; // Replace with your MongoDB URI
@@ -78,7 +76,8 @@ app.use(passport.session()); // Enable session handling with Passport
 app.use(passport.setAuthenticatedUser);
 
 // Define application routes
-app.use("/", require("./routes")); // Use routes defined in the routes directory
+import routes from "./routes/index.js";
+app.use("/", routes); // Use routes defined in the routes directory
 
 // Start the Express server
 app.listen(PORT, () =>
