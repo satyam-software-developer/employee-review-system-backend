@@ -1,7 +1,7 @@
 ## Employee Review System
 
 1. Git repository link: https://github.com/satyam-software-developer/employee-review-system-backend.git
-2. Hosted link: https://ecommerce-api-3-8uvj.onrender.com/products
+2. Hosted link: https://employeereviewsytemapp.onrender.com/
 
 # Description
 
@@ -127,7 +127,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 # DEMO
 
-- https://issuetracker-r4rt.onrender.com
+- https://employeereviewsytemapp.onrender.com/
 
 # Author
 
