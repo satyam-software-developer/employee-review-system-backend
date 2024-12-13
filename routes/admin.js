@@ -60,5 +60,17 @@ router.post("/createEmployee", authenticate, adminController.addEmployee);
 // Controller: `adminController.assignReview` handles assigning a review to a specific employee
 router.post("/assignReview", authenticate, adminController.assignReview);
 
+// Route: Render the update form for an admin
+// Path: GET `/updateAdminForm`
+// Middleware: `authenticate` ensures the user is logged in and an admin
+// Controller: `adminController.updateAdminForm` provides the form for updating admin details
+router.get("/updateAdminForm", authenticate, adminController.updateAdminForm);
+
+// Route: Update admin data
+// Path: POST `/updateAdmin`
+// Middleware: `authenticate` ensures the user is logged in and an admin
+// Controller: `adminController.updateAdmin` handles updating the admin's data
+router.post("/updateAdmin", authenticate, adminController.updateAdmin);
+
 // Export the router so it can be used in the main application
 export default router;
