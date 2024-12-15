@@ -1,114 +1,101 @@
 // Import required modules
-import passport from 'passport'; // Passport for authentication
-import { Strategy as LocalStrategy } from 'passport-local'; // Local strategy for username/password authentication
-import bcrypt from 'bcryptjs'; // For password hashing and comparison
-import User from '../models/User.js'; // User model for database interaction
+import passport from "passport"; // Passport for authentication
+import { Strategy as LocalStrategy } from "passport-local"; // Local strategy for username/password authentication
+import bcrypt from "bcryptjs"; // For hashing and comparing passwords
+import User from "../models/User.js"; // User model for database operations
 
-// Setting up the Local Strategy for authentication
+// Initialize the Local Strategy
 passport.use(
   new LocalStrategy(
     {
-      usernameField: 'email', // Specify the field used for login (default is 'username'; here we use 'email')
-      passReqToCallback: true, // Pass the request object to the callback function
+      usernameField: "email", // Using email as the username field
+      passReqToCallback: true, // Enables access to the `req` object
     },
-    // Authentication callback function
     async (req, email, password, done) => {
       try {
-        // Find the user in the database by email
+        // Find user by email
         const user = await User.findOne({ email });
 
-        // If no user is found with the provided email
+        // If user not found, return an error message
         if (!user) {
-          return done(null, false, { message: 'Incorrect username.' }); // Provide an error message
+          return done(null, false, { message: "User not found." });
         }
 
-        // Compare the provided password with the hashed password in the database
+        // Compare the entered password with the stored hashed password
         const isMatch = await bcrypt.compare(password, user.password);
 
-        // If the password does not match
+        // If passwords do not match, return an error message
         if (!isMatch) {
-          return done(null, false, { message: 'Incorrect password.' }); // Provide an error message
+          return done(null, false, { message: "Invalid password." });
         }
 
         // If authentication is successful, return the user object
         return done(null, user);
-      } catch (err) {
-        // Handle any unexpected errors during the authentication process
-        return done(err);
+      } catch (error) {
+        // Handle errors during the authentication process
+        console.error("Error during authentication:", error);
+        return done(error);
       }
     }
   )
 );
 
-// Serialize the user into the session
+// Serialize the user (store only the user ID in the session)
 passport.serializeUser((user, done) => {
-  // Store only the user ID in the session for simplicity and security
-  done(null, user.id);
+  done(null, user.id); // Serialize the user ID to the session
 });
 
-// Deserialize the user from the session
+// Deserialize the user (fetch the full user object from the session)
 passport.deserializeUser(async (id, done) => {
   try {
-    // Find the user in the database using the ID stored in the session
+    // Attempt to find the user by their ID
     const user = await User.findById(id);
 
-    // If the user is not found in the database
     if (!user) {
-      return done(new Error('User not found')); // Provide an error
+      console.error(`User with ID ${id} not found during deserialization.`);
+      return done(null, false, { message: "User not found" }); // Ends session for non-existent user
     }
 
-    // If user is found, pass the user object to the next middleware
+    // Successfully found user, return the user object
     done(null, user);
-  } catch (err) {
-    // Handle any errors that occur during the process
-    done(err);
+  } catch (error) {
+    // Handle errors during the deserialization process
+    console.error("Error during user deserialization:", error);
+    done(error, false); // End session on error
   }
 });
 
-// Middleware to check if the user is authenticated
+// Middleware to check if a user is authenticated
 passport.checkAuthentication = (req, res, next) => {
-  // If the user is authenticated, allow them to proceed to the next middleware/route
   if (req.isAuthenticated()) {
-    return next();
+    return next(); // Proceed if authenticated
   }
-
-  // If not authenticated, redirect the user to the login page
-  return res.redirect('/');
+  return res.redirect("/"); // Redirect to login page if not authenticated
 };
 
-// Middleware to set the authenticated user for the views
+// Middleware to set the authenticated user in response locals
 passport.setAuthenticatedUser = (req, res, next) => {
-  // If the user is authenticated, set the user object in the response locals
   if (req.isAuthenticated()) {
-    res.locals.user = req.user;
+    res.locals.user = req.user; // Makes user accessible in templates
   }
-
-  // Proceed to the next middleware/route
-  next();
+  next(); // Proceed to the next middleware
 };
 
-// Middleware to check if the user has an admin role
+// Middleware to check if the authenticated user is an Admin
 passport.isAdmin = (req, res, next) => {
-  // If the authenticated user has the role 'Admin', allow access
-  if (req.user && req.user.role === 'Admin') {
-    return next();
+  if (req.user && req.user.role === "Admin") {
+    return next(); // Proceed if user is an Admin
   }
-
-  // If not an admin, redirect back to the previous page
-  return res.redirect('back');
+  return res.redirect("back"); // Redirect to the previous page if not an Admin
 };
 
-// Middleware to check if the user has an employee role
+// Middleware to check if the authenticated user is an Employee
 passport.isEmployee = (req, res, next) => {
-  // If the authenticated user has the role 'Employee', allow access
-  if (req.user && req.user.role === 'Employee') {
-    return next();
+  if (req.user && req.user.role === "Employee") {
+    return next(); // Proceed if user is an Employee
   }
-
-  // If not an employee, redirect back to the previous page
-  return res.redirect('back');
+  return res.redirect("back"); // Redirect to the previous page if not an Employee
 };
 
-// Exporting the configured passport instance for use in other parts of the application
+// Export the configured passport instance
 export default passport;
-
