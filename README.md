@@ -1,7 +1,7 @@
 ## Employee Review System
 
 1. Git repository link: https://github.com/satyam-software-developer/employee-review-system-backend.git
-2. Hosted link: https://employeereviewsytemapp.onrender.com/
+2. Hosted link: https://employee-review-system-backend.onrender.com/
 
 # Description
 
