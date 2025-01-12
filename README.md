@@ -1,11 +1,11 @@
 ## Employee Review System
 
-1. Git repository link: https://github.com/satyam-software-developer/employee-review-system-backend.git
+1. Demo: https://drive.google.com/file/d/1HHX-T4oGswUTk4t4FlSLboJ34sM13iQL/view?usp=sharing
 2. Hosted link: https://employee-review-system-backend.onrender.com/
 
 # Description
 
-This project is a web application designed to facilitate the process of employee performance reviews. It allows employees to submit feedback on each other’s performance, while also enabling an admin to manage employees, view feedback, and assign reviews.
+This project is a web application designed to facilitate employee performance reviews. It allows employees to submit feedback on each other’s performance while also enabling an admin to manage employees, view feedback, and assign reviews.
 
 # Features:
 
@@ -105,10 +105,10 @@ employee-review-system/
   1. Login/Logout: Admin can log in using their credentials and log out when done.
   2. Manage Employees: Admin can add, remove, or update employees from the admin dashboard.
   3. Assign Reviews: Admin can assign employees to submit feedback on specific performance reviews.
-  4. Manage Reviews: Admin can add and update performance reviews for employees.
+  4. Manage Reviews: Admin can add and update employee performance reviews.
 - Employee Workflow:
   1. Login/Logout: Employees can log in using their credentials.
-  2. View Reviews: Employees can view reviews assigned to them for feedback.
+  2. View Reviews: Employees can view their assigned reviews for feedback.
   3. Submit Feedback: Employees can submit feedback on a colleague’s performance.
 
 # Contributing
@@ -124,10 +124,6 @@ Contributions are welcome! If you'd like to contribute to the project, please fo
 # License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
-
-# DEMO
-
-- https://employee-review-system-backend.onrender.com/
 
 # Author
 
